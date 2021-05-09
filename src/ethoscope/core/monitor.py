@@ -26,7 +26,7 @@ class Monitor(DescribedObject):
                                    
     def __init__(self, camera, tracker_class,
                  rois = None, stimulators=None,
-                 yoke=None
+                 yoke=None,
                  *args, **kwargs  # extra arguments for the tracker objects
                  ):
         r"""
