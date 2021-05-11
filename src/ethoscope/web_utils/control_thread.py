@@ -426,7 +426,7 @@ class ControlThread(Thread):
 
         return  (cam, rw, rois, TrackerClass, tracker_kwargs,
                         hardware_connection, StimulatorClass, stimulator_kwargs,
-                        monitorClass, monitor_kwargs)
+                        MonitorClass, monitor_kwargs)
 
     def run(self):
         cam = None
