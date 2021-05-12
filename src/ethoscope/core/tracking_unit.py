@@ -1,4 +1,6 @@
 __author__ = 'quentin'
+
+import logging
 from ethoscope.core.variables import BaseRelativeVariable
 from ethoscope.core.data_point import DataPoint
 from ethoscope.stimulators.stimulators import DefaultStimulator
@@ -32,8 +34,13 @@ class TrackingUnit(object):
 
         if tracker is None:
             self._stimulator.bind_tracker(self._tracker)
+            self._stimulator.target_roi = None
         else:
             self._stimulator.bind_tracker(tracker)
+            self._stimulator.target_roi = self._tracker._roi.idx
+
+        logging.info(f"Tracking unit from ROI {self._tracker._roi.idx} bounded tracker from ROI {self._stimulator._tracker._roi.idx} to its stimulator")
+        logging.info(f"The tracking data of this unit will reflect the behavior of the animal in ROI {self._tracker._roi.idx} but the stimulator responds to the behavior in ROI {self._stimulator._tracker._roi.idx}")
 
 
     @property
@@ -97,6 +104,7 @@ class TrackingUnit(object):
         data_rows = self._tracker.track(t,img)
 
         interact, result = self._stimulator.apply()
+
         if len(data_rows) == 0:
             return []
 
