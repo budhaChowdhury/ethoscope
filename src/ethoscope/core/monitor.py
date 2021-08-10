@@ -69,10 +69,10 @@ class Monitor(DescribedObject):
             self._unit_trackers = [TrackingUnit(tracker_class, r, None, *args, **kwargs) for r in rois]
 
         elif len(stimulators) == len(rois):
-            if yoke is None:
+            # if the user does not enter anything in yoke, yoke becomes "" (not None)
+            if yoke is None or yoke == "":
                 self._unit_trackers = [TrackingUnit(tracker_class, r, inter, *args, **kwargs) for r, inter in zip(rois, stimulators)]
             else:
-
                 yoke = json.loads(yoke)
                 self._unit_trackers = [None for r in rois]
                 for f in yoke.values():
