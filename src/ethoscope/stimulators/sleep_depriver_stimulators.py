@@ -111,7 +111,11 @@ class SleepDepStimulator(IsMovingStimulator):
 
 
     def _decide(self):
-        roi_id= self._tracker._roi.idx
+        if getattr(self, "target_roi", False):
+            roi_id = self.target_roi
+        else:
+            roi_id= self._tracker._roi.idx
+
         now =  self._tracker.last_time_point
 
         try:
@@ -129,6 +133,7 @@ class SleepDepStimulator(IsMovingStimulator):
             if float(now - self._t0) > self._inactivity_time_threshold_ms:
                 self._t0 = None
                 return HasInteractedVariable(True), {"channel":channel}
+
         else:
             self._t0 = now
         return HasInteractedVariable(False), {}
@@ -224,7 +229,6 @@ class OptomotorSleepDepriver(SleepDepStimulator):
         dic["duration"] = self._pulse_duration
         dic["intensity"] = self._pulse_intensity	
         return out,dic
-
 
 
 class ExperimentalSleepDepStimulator(SleepDepStimulator):
